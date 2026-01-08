@@ -16,3 +16,13 @@ variable "tags" {
 variable "region" {
   type = string
 }
+
+variable "public_subnets" {
+  description = "Public Subnets"
+  type = list(string)
+}
+
+variable "azs" {
+  description = "Availabilty Zone"
+  type = list(string)
+}

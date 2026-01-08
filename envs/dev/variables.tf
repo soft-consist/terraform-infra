@@ -1,19 +1,29 @@
 variable "cidr_block" {
   description = "The CIDR block for the VPC"
-  type = string
+  type        = string
 }
 
 variable "env" {
   description = "Environment name"
-    type = string
+  type        = string
 }
 
 variable "tags" {
   description = "Tags to apply to the VPC"
-  type = map(string)
+  type        = map(string)
 }
 
 variable "region" {
-  type = string
+  type    = string
   default = "ap-northeast-2"
+}
+
+variable "public_subnets" {
+  description = "Public Subnets"
+  type        = list(string)
+}
+
+variable "azs" {
+  description = "Availabilty Zone"
+  type        = list(string)
 }
