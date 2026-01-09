@@ -14,7 +14,7 @@ variable "tags" {
 }
 
 variable "region" {
-  type = string
+  type    = string
 }
 
 variable "public_subnets" {
