@@ -15,7 +15,6 @@ variable "tags" {
 
 variable "region" {
   type    = string
-  default = "ap-northeast-2"
 }
 
 variable "public_subnets" {
@@ -25,5 +24,10 @@ variable "public_subnets" {
 
 variable "azs" {
   description = "Availabilty Zone"
+  type        = list(string)
+}
+
+variable "private_subnets" {
+  description = "Private Subnets"
   type        = list(string)
 }

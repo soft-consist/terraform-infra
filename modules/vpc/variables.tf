@@ -26,3 +26,8 @@ variable "azs" {
   description = "Availabilty Zone"
   type = list(string)
 }
+
+variable "private_subnets" {
+  description = "Private Subnets"
+  type = list(string)
+}
