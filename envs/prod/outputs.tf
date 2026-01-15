@@ -24,3 +24,7 @@ output "cluster_ca" {
   description = "EKS Cluster CA"
   value       = module.eks.cluster_ca
 }
+
+output "public_subnet_ids" {
+  value = module.vpc.public_subnet_ids
+}
