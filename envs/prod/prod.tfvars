@@ -10,3 +10,9 @@ region          = "ap-northeast-2"
 
 cluster_name    = "Shared-cluster"
 cluster_version = "1.34"
+
+desired_size = 3
+max_size     = 6
+min_size     = 2
+
+node_instance_types = ["c7i-flex.large"]

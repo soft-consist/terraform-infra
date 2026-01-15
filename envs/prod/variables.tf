@@ -53,3 +53,26 @@ variable "private_subnet_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "desired_size" {
+  description = "Desired size of the node group"
+  type        = number
+  default     = 2
+}
+
+variable "max_size" {
+  description = "Maximum size of the node group"
+  type        = number
+  default     = 4
+}
+
+variable "min_size" {
+  description = "Minimum size of the node group"
+  type        = number
+  default     = 1
+}
+
+variable "node_instance_types" {
+  description = "Instance types for the node group"
+  type        = list(string)
+}
