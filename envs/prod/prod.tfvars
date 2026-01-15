@@ -16,3 +16,4 @@ max_size     = 6
 min_size     = 2
 
 node_instance_types = ["c7i-flex.large"]
+allowd_cidr_blocks = ["12.0.0.0/16"]

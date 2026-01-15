@@ -76,3 +76,9 @@ variable "node_instance_types" {
   description = "Instance types for the node group"
   type        = list(string)
 }
+
+variable "allowd_cidr_blocks" {
+  description = "Allowed CIDR blocks for access"
+  type        = list(string)
+  default     = []
+}
