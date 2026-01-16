@@ -35,7 +35,7 @@ module "bastion" {
   env    = var.env
   vpc_id = module.vpc.aws_vpc
 
-  # 🔥 ONE subnet only
+  # ONE subnet only
   public_subnet_ids = module.vpc.public_subnet_ids
 
   ami           = var.bastion_ami
@@ -45,3 +45,7 @@ module "bastion" {
   allowed_ssh_cidr = var.allowed_ssh_cidr
   tags             = var.tags
 }
+
+
+
+
