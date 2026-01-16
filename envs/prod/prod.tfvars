@@ -15,7 +15,7 @@ desired_size = 1
 max_size     = 3
 min_size     = 1
 
-node_instance_types = ["c7i-flex.large"]
+node_instance_types = ["t3.small"]
 allowd_cidr_blocks  = ["12.0.0.0/16"]
 
 # Bastion Host Configuration
