@@ -45,3 +45,4 @@ module "bastion" {
   allowed_ssh_cidr = var.allowed_ssh_cidr
   tags             = var.tags
 }
+
