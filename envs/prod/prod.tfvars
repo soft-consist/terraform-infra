@@ -24,3 +24,4 @@ bastion_instance_type = "t3.micro"
 bastion_key_name      = "bastion-key"
 
 allowed_ssh_cidr = ["0.0.0.0/0"]
+
