@@ -18,12 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        environment: [dev, stage, prod]
-
-    defaults:
-      run:
-        shell: bash
-        working-directory: envs/${{ matrix.environment }}
+        environment: [dev, test, prod]
 
     steps:
       - name: Checkout repo
@@ -45,9 +40,11 @@ jobs:
           terraform_version: 1.6.6
 
       - name: Terraform Init
+        working-directory: envs/${{ matrix.environment }}
         run: terraform init -input=false
 
       - name: Terraform Apply
+        working-directory: envs/${{ matrix.environment }}
         run: |
           terraform apply \
             --var-file=${{ matrix.environment }}.tfvars \
