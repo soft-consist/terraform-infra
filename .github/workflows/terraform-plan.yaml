@@ -39,28 +39,79 @@ jobs:
     needs: detect-changes
     if: needs.detect-changes.outputs.dev == 'true' || needs.detect-changes.outputs.modules == 'true'
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      - name: Terraform Plan (dev)
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_DEV }}
+          aws-region: ap-northeast-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: Terraform Init
         working-directory: envs/dev
-        run: terraform plan -var-file=dev.tfvars
+        run: terraform init -input=false
+
+      - name: Terraform Plan
+        working-directory: envs/dev
+        run: terraform plan -var-file=dev.tfvars -input=false
 
   plan-stage:
     needs: detect-changes
     if: needs.detect-changes.outputs.stage == 'true' || needs.detect-changes.outputs.modules == 'true'
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      - name: Terraform Plan (stage)
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_STAGE }}
+          aws-region: ap-northeast-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: Terraform Init
         working-directory: envs/stage
-        run: terraform plan -var-file=stage.tfvars
+        run: terraform init -input=false
+
+      - name: Terraform Plan
+        working-directory: envs/stage
+        run: terraform plan -var-file=stage.tfvars -input=false
 
   plan-prod:
     needs: detect-changes
     if: needs.detect-changes.outputs.prod == 'true' || needs.detect-changes.outputs.modules == 'true'
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      - name: Terraform Plan (prod)
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
+          aws-region: ap-northeast-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: Terraform Init
         working-directory: envs/prod
-        run: terraform plan -var-file=prod.tfvars
+        run: terraform init -input=false
+
+      - name: Terraform Plan
+        working-directory: envs/prod
+        run: terraform plan -var-file=prod.tfvars -input=false
