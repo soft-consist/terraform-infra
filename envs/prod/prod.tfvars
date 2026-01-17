@@ -11,7 +11,7 @@ region          = "ap-northeast-2"
 cluster_name    = "Shared-cluster"
 cluster_version = "1.34"
 
-desired_size = 1
+desired_size = 2
 max_size     = 3
 min_size     = 1
 
@@ -24,3 +24,4 @@ bastion_instance_type = "t3.micro"
 bastion_key_name      = "bastion-key"
 
 allowed_ssh_cidr = ["0.0.0.0/0"]
+

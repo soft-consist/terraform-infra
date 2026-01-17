@@ -2,43 +2,51 @@ name: Terraform Plan (PR)
 
 on:
   pull_request:
-    branches:
-      - main
-    paths:
-      - "**/*.tf"
-      - "**/*.tfvars"
-      - ".github/workflows/**"
+    branches: [main]
 
 permissions:
   id-token: write
   contents: read
-  pull-requests: write   # needed to comment plan on PR
+  pull-requests: write
 
 jobs:
-  terraform-plan:
+  detect-changes:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        environment: [dev, stage, prod]
-
-    defaults:
-      run:
-        shell: bash
-        working-directory: envs/${{ matrix.environment }}
+    outputs:
+      dev: ${{ steps.filter.outputs.dev }}
+      stage: ${{ steps.filter.outputs.stage }}
+      prod: ${{ steps.filter.outputs.prod }}
+      modules: ${{ steps.filter.outputs.modules }}
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Configure Git for private module repo
-        run: |
-          git config --global url."https://${{ secrets.MODULE_REPO_TOKEN }}@github.com/".insteadOf "https://github.com/"
+      - name: Detect changed paths
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            dev:
+              - 'envs/dev/**'
+            stage:
+              - 'envs/stage/**'
+            prod:
+              - 'envs/prod/**'
+            modules:
+              - 'modules/**'
+
+  plan-dev:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.dev == 'true' || needs.detect-changes.outputs.modules == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
 
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_DEV }}
           aws-region: ap-northeast-2
 
       - name: Setup Terraform
@@ -46,32 +54,85 @@ jobs:
         with:
           terraform_version: 1.6.6
 
+      # - name: Terraform Format
+      #   run: terraform fmt -check -recursive
+
       - name: Terraform Init
+        working-directory: envs/dev
         run: terraform init -input=false
 
       - name: Terraform Validate
+        working-directory: envs/dev
         run: terraform validate
 
       - name: Terraform Plan
-        run: |
-          terraform plan \
-            --var-file=${{ matrix.environment }}.tfvars \
-            -input=false \
-            -no-color | tee plan.txt
+        working-directory: envs/dev
+        run: terraform plan -var-file=dev.tfvars -input=false
 
-      # 🔥 Show plan directly in PR
-      - name: Comment plan on PR
-        uses: actions/github-script@v7
+  plan-stage:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.stage == 'true' || needs.detect-changes.outputs.modules == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          script: |
-            const fs = require('fs')
-            const plan = fs.readFileSync('envs/${{ matrix.environment }}/plan.txt', 'utf8')
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_STAGE }}
+          aws-region: ap-northeast-2
 
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `### Terraform Plan (${process.env.ENV})\n\n\`\`\`\n${plan}\n\`\`\``
-            })
-        env:
-          ENV: ${{ matrix.environment }}
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      # - name: Terraform Format
+      #   run: terraform fmt -check -recursive
+
+      - name: Terraform Init
+        working-directory: envs/stage
+        run: terraform init -input=false
+
+      - name: Terraform Validate
+        working-directory: envs/stage
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: envs/stage
+        run: terraform plan -var-file=stage.tfvars -input=false
+
+  plan-prod:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.prod == 'true' || needs.detect-changes.outputs.modules == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
+          aws-region: ap-northeast-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      # - name: Terraform Format
+      #   run: terraform fmt -check -recursive
+
+      - name: Terraform Init
+        working-directory: envs/prod
+        run: terraform init -input=false
+
+      - name: Terraform Validate
+        working-directory: envs/prod
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: envs/prod
+        run: terraform plan -var-file=prod.tfvars -input=false

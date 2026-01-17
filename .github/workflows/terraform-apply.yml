@@ -2,41 +2,50 @@ name: Terraform Apply (Main)
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - "**/*.tf"
-      - "**/*.tfvars"
+    branches: [main]
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  terraform-apply:
+  detect-changes:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        environment: [dev, stage, prod]
-
-    defaults:
-      run:
-        shell: bash
-        working-directory: envs/${{ matrix.environment }}
+    outputs:
+      dev: ${{ steps.filter.outputs.dev }}
+      stage: ${{ steps.filter.outputs.stage }}
+      prod: ${{ steps.filter.outputs.prod }}
+      modules: ${{ steps.filter.outputs.modules }}
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Configure Git for private module repo
-        run: |
-          git config --global url."https://${{ secrets.MODULE_REPO_TOKEN }}@github.com/".insteadOf "https://github.com/"
+      - name: Detect changed paths
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            dev:
+              - 'envs/dev/**'
+            stage:
+              - 'envs/stage/**'
+            prod:
+              - 'envs/prod/**'
+            modules:
+              - 'modules/**'
+
+  apply-dev:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.dev == 'true' || needs.detect-changes.outputs.modules == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
 
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_DEV }}
           aws-region: ap-northeast-2
 
       - name: Setup Terraform
@@ -45,11 +54,64 @@ jobs:
           terraform_version: 1.6.6
 
       - name: Terraform Init
+        working-directory: envs/dev
         run: terraform init -input=false
 
       - name: Terraform Apply
-        run: |
-          terraform apply \
-            --var-file=${{ matrix.environment }}.tfvars \
-            -input=false \
-            -auto-approve
+        working-directory: envs/dev
+        run: terraform apply -var-file=dev.tfvars -auto-approve -input=false
+
+  apply-stage:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.stage == 'true' || needs.detect-changes.outputs.modules == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_STAGE }}
+          aws-region: ap-northeast-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: Terraform Init
+        working-directory: envs/stage
+        run: terraform init -input=false
+
+      - name: Terraform Apply
+        working-directory: envs/stage
+        run: terraform apply -var-file=stage.tfvars -auto-approve -input=false
+
+  apply-prod:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.prod == 'true' || needs.detect-changes.outputs.modules == 'true'
+    runs-on: ubuntu-latest
+    environment: prod   # 🔒 manual approval in GitHub
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
+          aws-region: ap-northeast-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: Terraform Init
+        working-directory: envs/prod
+        run: terraform init -input=false
+
+      - name: Terraform Apply
+        working-directory: envs/prod
+        run: terraform apply -var-file=prod.tfvars -auto-approve -input=false
