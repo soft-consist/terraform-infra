@@ -2,12 +2,7 @@ name: Terraform Plan (PR)
 
 on:
   pull_request:
-    branches:
-      - main
-    paths:
-      - "**/*.tf"
-      - "**/*.tfvars"
-      - ".github/workflows/**"
+    branches: [main]
 
 permissions:
   id-token: write
@@ -15,62 +10,57 @@ permissions:
   pull-requests: write
 
 jobs:
-  terraform-plan:
+  detect-changes:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        environment: [dev, test, prod]
+    outputs:
+      dev: ${{ steps.filter.outputs.dev }}
+      stage: ${{ steps.filter.outputs.stage }}
+      prod: ${{ steps.filter.outputs.prod }}
+      modules: ${{ steps.filter.outputs.modules }}
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # Runs at repo root (IMPORTANT)
-      - name: Configure Git for private module repo
-        run: |
-          git config --global url."https://${{ secrets.MODULE_REPO_TOKEN }}@github.com/".insteadOf "https://github.com/"
-
-      - name: Configure AWS credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Detect changed paths
+        id: filter
+        uses: dorny/paths-filter@v3
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: ap-northeast-2
+          filters: |
+            dev:
+              - 'envs/dev/**'
+            stage:
+              - 'envs/stage/**'
+            prod:
+              - 'envs/prod/**'
+            modules:
+              - 'modules/**'
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.6.6
+  plan-dev:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.dev == 'true' || needs.detect-changes.outputs.modules == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Terraform Plan (dev)
+        working-directory: envs/dev
+        run: terraform plan -var-file=dev.tfvars
 
-      # 🔽 Terraform commands only inside env directory
-      - name: Terraform Init
-        working-directory: envs/${{ matrix.environment }}
-        run: terraform init -input=false
+  plan-stage:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.stage == 'true' || needs.detect-changes.outputs.modules == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Terraform Plan (stage)
+        working-directory: envs/stage
+        run: terraform plan -var-file=stage.tfvars
 
-      - name: Terraform Validate
-        working-directory: envs/${{ matrix.environment }}
-        run: terraform validate
-
-      - name: Terraform Plan
-        working-directory: envs/${{ matrix.environment }}
-        run: |
-          terraform plan \
-            --var-file=${{ matrix.environment }}.tfvars \
-            -input=false \
-            -no-color | tee plan.txt
-
-      # 🔥 Show plan in PR
-      - name: Comment plan on PR
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs')
-            const env = '${{ matrix.environment }}'
-            const plan = fs.readFileSync(`envs/${env}/plan.txt`, 'utf8')
-
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `### Terraform Plan (${env})\n\n\`\`\`\n${plan}\n\`\`\``
-            })
+  plan-prod:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.prod == 'true' || needs.detect-changes.outputs.modules == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Terraform Plan (prod)
+        working-directory: envs/prod
+        run: terraform plan -var-file=prod.tfvars
