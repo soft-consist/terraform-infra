@@ -1,0 +1,55 @@
+name: Terraform Apply (Main)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**/*.tf"
+      - "**/*.tfvars"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terraform-apply:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        environment: [dev, stage, prod]
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: envs/${{ matrix.environment }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Configure Git for private module repo
+        run: |
+          git config --global url."https://${{ secrets.MODULE_REPO_TOKEN }}@github.com/".insteadOf "https://github.com/"
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ap-northeast-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: Terraform Init
+        run: terraform init -input=false
+
+      - name: Terraform Apply
+        run: |
+          terraform apply \
+            --var-file=${{ matrix.environment }}.tfvars \
+            -input=false \
+            -auto-approve
