@@ -25,7 +25,7 @@ resource "aws_iam_role" "github_actions" {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           }
           StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:soft-consist/terraform-infra:*"
+            "token.actions.githubusercontent.com:sub" = "repo:softconsist-in/soft-consist/terraform-infra:*"
           }
         }
       }
