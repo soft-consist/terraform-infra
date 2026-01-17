@@ -29,19 +29,15 @@ module "eks" {
 
 }
 
-module "bastion" {
-  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/bastion?ref=main"
-
-  env    = var.env
-  vpc_id = module.vpc.aws_vpc
-
-  # ONE subnet only
-  public_subnet_ids = module.vpc.public_subnet_ids
-
-  ami           = var.bastion_ami
-  instance_type = var.bastion_instance_type
-  key_name      = var.bastion_key_name
-
-  allowed_ssh_cidr = var.allowed_ssh_cidr
-  tags             = var.tags
-}
+# module "bastion" {
+#   source = "git::https://github.com/soft-consist/terraform-modules.git//modules/bastion?ref=main"
+#   env    = var.env
+#   vpc_id = module.vpc.aws_vpc
+#   # ONE subnet only
+#   public_subnet_ids = module.vpc.public_subnet_ids
+#   ami           = var.bastion_ami
+#   instance_type = var.bastion_instance_type
+#   key_name      = var.bastion_key_name
+#   allowed_ssh_cidr = var.allowed_ssh_cidr
+#   tags             = var.tags
+# }
