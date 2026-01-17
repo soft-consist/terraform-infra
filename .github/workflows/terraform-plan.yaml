@@ -54,9 +54,16 @@ jobs:
         with:
           terraform_version: 1.6.6
 
+      - name: Terraform Format
+        run: terraform fmt -check -recursive
+
       - name: Terraform Init
         working-directory: envs/dev
         run: terraform init -input=false
+
+      - name: Terraform Validate
+        working-directory: envs/dev
+        run: terraform validate
 
       - name: Terraform Plan
         working-directory: envs/dev
@@ -81,9 +88,16 @@ jobs:
         with:
           terraform_version: 1.6.6
 
+      - name: Terraform Format
+        run: terraform fmt -check -recursive
+
       - name: Terraform Init
         working-directory: envs/stage
         run: terraform init -input=false
+
+      - name: Terraform Validate
+        working-directory: envs/stage
+        run: terraform validate
 
       - name: Terraform Plan
         working-directory: envs/stage
@@ -108,9 +122,16 @@ jobs:
         with:
           terraform_version: 1.6.6
 
+      - name: Terraform Format
+        run: terraform fmt -check -recursive
+
       - name: Terraform Init
         working-directory: envs/prod
         run: terraform init -input=false
+
+      - name: Terraform Validate
+        working-directory: envs/prod
+        run: terraform validate
 
       - name: Terraform Plan
         working-directory: envs/prod

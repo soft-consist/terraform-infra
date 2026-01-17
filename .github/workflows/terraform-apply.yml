@@ -92,7 +92,7 @@ jobs:
     needs: detect-changes
     if: needs.detect-changes.outputs.prod == 'true' || needs.detect-changes.outputs.modules == 'true'
     runs-on: ubuntu-latest
-    environment: prod   # 👈 enable manual approval in GitHub UI
+    environment: prod   # 🔒 manual approval in GitHub
 
     steps:
       - uses: actions/checkout@v4
