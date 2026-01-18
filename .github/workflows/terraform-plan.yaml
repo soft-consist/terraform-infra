@@ -78,19 +78,6 @@ jobs:
           TF_ENV: dev
           PLAN_PATH: envs/dev/plan.txt
 
-      # - name: Terraform Plan
-      #   working-directory: envs/dev
-      #   run: terraform plan -var-file=dev.tfvars -no-color | tee plan.txt
-
-      # - name: Notify PR (DEV)
-      #   run: python3 scripts/terraform_notifier.py
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     GITHUB_REPOSITORY: ${{ github.repository }}
-      #     PR_NUMBER: ${{ github.event.pull_request.number }}
-      #     TF_ENV: dev
-      #     PLAN_PATH: envs/dev/plan.txt
-
   plan-test:
     needs: detect-changes
     if: needs.detect-changes.outputs.test == 'true' || needs.detect-changes.outputs.modules == 'true'
@@ -123,7 +110,16 @@ jobs:
 
       - name: Terraform Plan
         working-directory: envs/test
-        run: terraform plan -var-file=test.tfvars -input=false
+        run: terraform plan -var-file=test.tfvars -no-color | tee plan.txt
+
+      - name: Notify PR (TEST)
+        run: node scripts/terraform-notifier.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          TF_ENV: test
+          PLAN_PATH: envs/test/plan.txt
 
   plan-prod:
     needs: detect-changes
