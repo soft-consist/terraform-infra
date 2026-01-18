@@ -133,6 +133,14 @@ jobs:
         working-directory: envs/prod
         run: terraform validate
 
-      - name: Terraform Plan
-        working-directory: envs/prod
-        run: terraform plan -var-file=prod.tfvars -input=false
+      # - name: Terraform Plan
+      #   working-directory: envs/prod
+      #   run: terraform plan -var-file=prod.tfvars -input=false
+
+      - name: Terraform Plan (DEV)
+        uses: cloudposse/github-action-terraform-plan@v1
+        with:
+          terraform_version: 1.6.6
+          working_directory: envs/dev
+          var_file: dev.tfvars
+          github_token: ${{ secrets.GITHUB_TOKEN }}
