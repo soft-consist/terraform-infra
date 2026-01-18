@@ -159,15 +159,15 @@ jobs:
         working-directory: envs/prod
         run: terraform plan -var-file=prod.tfvars -input=false
 
-      # - name: Terraform Plan
-      #   working-directory: envs/dev
-      #   run: terraform plan -var-file=dev.tfvars -no-color | tee plan.txt
+      - name: Terraform Plan
+        working-directory: envs/dev
+        run: terraform plan -var-file=dev.tfvars -no-color | tee plan.txt
 
-      # - name: Notify PR (DEV)
-      #   run: python3 scripts/terraform_notifier.py
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     GITHUB_REPOSITORY: ${{ github.repository }}
-      #     PR_NUMBER: ${{ github.event.pull_request.number }}
-      #     TF_ENV: dev
-      #     PLAN_PATH: envs/dev/plan.txt
+      - name: Notify PR (DEV)
+        run: node scripts/terraform-notifier.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          TF_ENV: dev
+          PLAN_PATH: envs/dev/plan.txt
