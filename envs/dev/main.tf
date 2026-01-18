@@ -13,16 +13,16 @@ module "vpc" {
   azs             = var.azs
 }
 
-module "eks" {
-  source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=main"
-  env                 = var.env
-  cluster_name        = var.cluster_name
-  cluster_version     = var.cluster_version
-  vpc_id              = module.vpc.aws_vpc
-  private_subnet_ids  = module.vpc.private_subnet_ids
-  tags                = var.tags
-  desired_size        = var.desired_size
-  max_size            = var.max_size
-  min_size            = var.min_size
-  node_instance_types = var.node_instance_types
-  allowd_cidr_blocks  = var.allowd_cidr_blocks
+# module "eks" {
+#   source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=main"
+#   env                 = var.env
+#   cluster_name        = var.cluster_name
+#   cluster_version     = var.cluster_version
+#   vpc_id              = module.vpc.aws_vpc
+#   private_subnet_ids  = module.vpc.private_subnet_ids
+#   tags                = var.tags
+#   desired_size        = var.desired_size
+#   max_size            = var.max_size
+#   min_size            = var.min_size
+#   node_instance_types = var.node_instance_types
+#   allowd_cidr_blocks  = var.allowd_cidr_blocks
