@@ -61,31 +61,31 @@ def main():
     marker = f"<!-- terraform-plan-{environment.lower()} -->"
 
     body = f"""
-{marker}
-### 🌍 Terraform Plan – **{environment}**
+    {marker}
+    ### 🌍 Terraform Plan – **{environment}**
 
-<details>
-<summary>Click to expand</summary>
+    <details>
+    <summary>Click to expand</summary>
 
-```terraform
-{plan}
+    ```terraform
+    {plan}
 
-</details> """
+    </details> """
 
-# 4️⃣ Headers for GitHub API
-headers = {
-    "Authorization": f"Bearer {token}",
-    "Accept": "application/vnd.github+json",
-}
+    # 4️⃣ Headers for GitHub API
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json",
+    }
 
 # 5️⃣ Create or update PR comment
-create_or_update_comment(
-    headers=headers,
-    owner=owner,
-    repo=repo_name,
-    pr_number=pr_number,
-    body=body,
-    marker=marker,
-)
+    create_or_update_comment(
+        headers=headers,
+        owner=owner,
+        repo=repo_name,
+        pr_number=pr_number,
+        body=body,
+        marker=marker,
+    )
 if __name__ == "__main__":
     main()
