@@ -53,3 +53,20 @@ resource "aws_iam_role_policy_attachment" "admin" {
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
+# existing role + OIDC code above ...
+
+resource "aws_iam_user_policy" "allow_assume_role" {
+  name = "allow-assume-github-actions-role"
+  user = "Ashutosh-Bambal"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = "sts:AssumeRole"
+        Resource = aws_iam_role.github_actions.arn
+      }
+    ]
+  })
+}
