@@ -29,14 +29,14 @@ module "eks" {
 
 }
 
-# module "eks_access" {
-#   source = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks-access?ref=v9.0.7"
-#   cluster_name = module.eks.cluster_name
-#   admin_role_arn = var.eks_admin_role_arn
-#   readonly_role_arns = {
-#     dev_readonly = var.eks_readonly_role_arn
-#   }
-# }
+module "eks_access" {
+  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks-access?ref=v9.0.7"
+  cluster_name = module.eks.cluster_name
+  admin_role_arn = var.eks_admin_role_arn
+  readonly_role_arns = {
+    dev_readonly = var.eks_readonly_role_arn
+  }
+}
 
 module "bastion" {
   source = "git::https://github.com/soft-consist/terraform-modules.git//modules/bastion?ref=main"
