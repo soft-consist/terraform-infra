@@ -97,14 +97,3 @@ variable "public_subnet_ids" {
   default     = []
 
 }
-
-variable "eks_admin_role_arn" {
-  description = "IAM role ARN with full admin access to EKS"
-  type        = string
-}
-
-variable "eks_readonly_role_arn" {
-  description = "IAM role ARN with readonly access to EKS"
-  type        = string
-  default     = null
-}

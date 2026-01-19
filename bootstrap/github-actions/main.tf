@@ -25,17 +25,25 @@ resource "aws_iam_role" "github_actions" {
       {
         Effect = "Allow"
         Principal = {
-          Federated = aws_iam_openid_connect_provider.github.arn
+          Federated = data.aws_iam_openid_connect_provider.github.arn
         }
         Action = "sts:AssumeRoleWithWebIdentity"
         Condition = {
-          StringEquals = {
-            "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
-          }
           StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:softconsist-in/soft-consist/terraform-infra:*"
+            "token.actions.githubusercontent.com:sub" = "repo:Kalyani-Bambal/terraform-infra:*"
           }
         }
+      },
+      {
+        Effect = "Allow"
+        Principal = {
+          AWS = [
+            "arn:aws:iam::358871393576:user/Kalyani-Bambal",
+            "arn:aws:iam::358871393576:user/Ashutosh-Bambal",
+            "arn:aws:iam::358871393576:role/github-actions-terraform-role"
+          ]
+        }
+        Action = "sts:AssumeRole"
       }
     ]
   })
