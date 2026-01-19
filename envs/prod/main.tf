@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=main"
+  source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=addon1"
   env             = var.env
   cidr_block      = var.cidr_block
   tags            = var.tags
@@ -14,7 +14,7 @@ module "vpc" {
 }
 
 module "eks" {
-  source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=main"
+  source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=addon1"
   env                 = var.env
   cluster_name        = var.cluster_name
   cluster_version     = var.cluster_version
@@ -27,6 +27,15 @@ module "eks" {
   node_instance_types = var.node_instance_types
   allowd_cidr_blocks  = var.allowd_cidr_blocks
 
+}
+
+module "eks_access" {
+  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks-access?ref=addon1"
+  cluster_name = module.eks.cluster_name
+  admin_role_arn = var.eks_admin_role_arn
+  readonly_role_arns = {
+    dev_readonly = var.eks_readonly_role_arn
+  }
 }
 
 # module "bastion" {
