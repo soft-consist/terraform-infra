@@ -70,3 +70,4 @@ resource "aws_iam_user_policy" "allow_assume_role" {
     ]
   })
 }
+
