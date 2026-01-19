@@ -24,6 +24,3 @@ bastion_instance_type = "t3.micro"
 bastion_key_name      = "bastion-key"
 
 allowed_ssh_cidr = ["0.0.0.0/0"]
-
-eks_admin_role_arn    = "arn:aws:iam::358871393576:role/dev-eks-admin-role"
-eks_readonly_role_arn = "arn:aws:iam::358871393576:role/dev-eks-readonly-role"
