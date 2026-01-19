@@ -27,13 +27,16 @@ resource "aws_iam_role" "github_actions" {
         }
         Action = "sts:AssumeRoleWithWebIdentity"
         Condition = {
+          StringEquals = {
+            "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+          }
           StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:Kalyani-Bambal/terraform-infra:*"
+            "token.actions.githubusercontent.com:sub" = "repo:soft-consist/terraform-infra:*"
           }
         }
       },
 
-      # 2️⃣ Human access (local laptop users)
+      # 2️⃣ Human access
       {
         Effect = "Allow"
         Principal = {
@@ -52,8 +55,6 @@ resource "aws_iam_role_policy_attachment" "admin" {
   role       = aws_iam_role.github_actions.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
-
-# existing role + OIDC code above ...
 
 resource "aws_iam_user_policy" "allow_assume_role" {
   name = "allow-assume-github-actions-role"

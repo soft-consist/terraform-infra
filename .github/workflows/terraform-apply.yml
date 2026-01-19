@@ -16,6 +16,7 @@ jobs:
       stage: ${{ steps.filter.outputs.stage }}
       prod: ${{ steps.filter.outputs.prod }}
       modules: ${{ steps.filter.outputs.modules }}
+      bootstrap: ${{ steps.filter.outputs.bootstrap }}
 
     steps:
       - uses: actions/checkout@v4
@@ -33,10 +34,15 @@ jobs:
               - 'envs/prod/**'
             modules:
               - 'modules/**'
+            bootstrap:
+              - 'bootstrap/github-actions/**'
 
   apply-dev:
     needs: detect-changes
-    if: needs.detect-changes.outputs.dev == 'true' || needs.detect-changes.outputs.modules == 'true'
+    if: |
+      needs.detect-changes.outputs.dev == 'true' ||
+      needs.detect-changes.outputs.modules == 'true' ||
+      needs.detect-changes.outputs.bootstrap == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -63,7 +69,10 @@ jobs:
 
   apply-stage:
     needs: detect-changes
-    if: needs.detect-changes.outputs.stage == 'true' || needs.detect-changes.outputs.modules == 'true'
+    if: |
+      needs.detect-changes.outputs.stage == 'true' ||
+      needs.detect-changes.outputs.modules == 'true' ||
+      needs.detect-changes.outputs.bootstrap == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -90,7 +99,10 @@ jobs:
 
   apply-prod:
     needs: detect-changes
-    if: needs.detect-changes.outputs.prod == 'true' || needs.detect-changes.outputs.modules == 'true'
+    if: |
+      needs.detect-changes.outputs.prod == 'true' ||
+      needs.detect-changes.outputs.modules == 'true' ||
+      needs.detect-changes.outputs.bootstrap == 'true'
     runs-on: ubuntu-latest
     environment: prod   # 🔒 manual approval in GitHub
 
