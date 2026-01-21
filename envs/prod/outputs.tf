@@ -36,3 +36,7 @@ output "public_subnet_ids" {
 output "bastion_access_role_arn" {
   value = module.bastion.bastion_access_role_arn
 }
+
+output "bastion_access_role_name" {
+  value = module.bastion.bastion_access_role_name
+}
