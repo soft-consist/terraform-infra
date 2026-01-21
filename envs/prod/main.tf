@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=v9.0.7"
+  source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=v9.0.13"
   env             = var.env
   cidr_block      = var.cidr_block
   tags            = var.tags
@@ -14,7 +14,7 @@ module "vpc" {
 }
 
 module "eks" {
-  source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.7"
+  source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.13"
   env                 = var.env
   cluster_name        = var.cluster_name
   cluster_version     = var.cluster_version
@@ -26,11 +26,11 @@ module "eks" {
   min_size            = var.min_size
   node_instance_types = var.node_instance_types
   allowd_cidr_blocks  = var.allowd_cidr_blocks
-
+  bastion_role_arn    = module.bastion.role_arn
 }
 
 module "bastion" {
-  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/bastion?ref=main"
+  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/bastion?ref=v9.0.13"
   env    = var.env
   vpc_id = module.vpc.aws_vpc
   # ONE subnet only
