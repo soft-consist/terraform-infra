@@ -96,3 +96,9 @@ variable "public_subnet_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "bastion_assume_role_principals" {
+  description = "List of IAM principals allowed to assume the bastion role"
+  type        = list(string)
+  default     = []
+}
