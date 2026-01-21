@@ -83,17 +83,22 @@ variable "allowd_cidr_blocks" {
   default     = []
 }
 
-variable "bastion_ami" {}
-variable "bastion_instance_type" {}
-variable "bastion_key_name" {}
+# variable "bastion_ami" {}
+# variable "bastion_instance_type" {}
+# variable "bastion_key_name" {}
 
-variable "allowed_ssh_cidr" {
-  type = list(string)
-}
+# variable "allowed_ssh_cidr" {
+#   type = list(string)
+# }
 
 variable "public_subnet_ids" {
   description = "Public Subnets IDs"
   type        = list(string)
   default     = []
+}
 
+variable "bastion_assume_role_principals" {
+  description = "List of IAM principals allowed to assume the bastion role"
+  type        = list(string)
+  default     = []
 }
