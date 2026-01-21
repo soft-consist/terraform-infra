@@ -18,13 +18,6 @@ min_size     = 2
 node_instance_types = ["t3.small"]
 allowd_cidr_blocks  = ["12.0.0.0/16"]
 
-# Bastion Host Configuration
-bastion_ami           = "ami-0a71e3eb8b23101ed"
-bastion_instance_type = "t3.micro"
-bastion_key_name      = "bastion-key"
-
-allowed_ssh_cidr = ["0.0.0.0/0"]
-
 bastion_assume_role_principals = [
   "arn:aws:iam::358871393576:user/Ashutosh-Bambal",
   "arn:aws:iam::358871393576:user/Kalyani-Bambal"
