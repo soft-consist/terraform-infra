@@ -95,5 +95,4 @@ variable "public_subnet_ids" {
   description = "Public Subnets IDs"
   type        = list(string)
   default     = []
-
 }

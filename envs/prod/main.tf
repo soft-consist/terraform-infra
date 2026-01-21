@@ -26,7 +26,8 @@ module "eks" {
   min_size            = var.min_size
   node_instance_types = var.node_instance_types
   allowd_cidr_blocks  = var.allowd_cidr_blocks
-  bastion_role_arn    = module.bastion.role_arn
+  # bastion_role_arn    = module.bastion.role_arn
+  bastion_access_role_arn = module.bastion.bastion_access_role_arn
 }
 
 module "bastion" {
@@ -40,5 +41,9 @@ module "bastion" {
   key_name      = var.bastion_key_name
   allowed_ssh_cidr = var.allowed_ssh_cidr
   tags             = var.tags
+  bastion_assume_role_principals = [
+    "arn:aws:iam::358871393576:user/Ashutosh-Bambal",
+    "arn:aws:iam::358871393576:user/Kalyani-Bambal"
+  ]
 }
 
