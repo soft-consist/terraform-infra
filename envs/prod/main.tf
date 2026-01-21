@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=v9.0.13"
+  source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=v9.0.14"
   env             = var.env
   cidr_block      = var.cidr_block
   tags            = var.tags
@@ -14,7 +14,7 @@ module "vpc" {
 }
 
 module "eks" {
-  source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.13"
+  source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.14"
   env                 = var.env
   cluster_name        = var.cluster_name
   cluster_version     = var.cluster_version
@@ -31,7 +31,7 @@ module "eks" {
 }
 
 module "bastion" {
-  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/bastion?ref=v9.0.13"
+  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/bastion?ref=v9.0.14"
   env    = var.env
   vpc_id = module.vpc.aws_vpc
   # ONE subnet only
@@ -41,9 +41,6 @@ module "bastion" {
   key_name      = var.bastion_key_name
   allowed_ssh_cidr = var.allowed_ssh_cidr
   tags             = var.tags
-  bastion_assume_role_principals = [
-    "arn:aws:iam::358871393576:user/Ashutosh-Bambal",
-    "arn:aws:iam::358871393576:user/Kalyani-Bambal"
-  ]
+  bastion_assume_role_principals = var.bastion_assume_role_principals
 }
 
