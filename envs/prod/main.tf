@@ -14,7 +14,7 @@ module "vpc" {
 }
 
 module "eks" {
-  source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.7"
+  source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.8"
   env                 = var.env
   cluster_name        = var.cluster_name
   cluster_version     = var.cluster_version
@@ -26,6 +26,13 @@ module "eks" {
   min_size            = var.min_size
   node_instance_types = var.node_instance_types
   allowd_cidr_blocks  = var.allowd_cidr_blocks
+  aws_auth_roles = [
+    {
+      rolearn  = "arn:aws:iam::358871393576:role/github-actions-terraform-role"
+      username = "platform-admin"
+      groups   = ["system:masters"]
+    }
+  ]
 
 }
 
