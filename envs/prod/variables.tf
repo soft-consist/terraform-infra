@@ -1,96 +1,96 @@
-variable "cidr_block" {
-  description = "The CIDR block for the VPC"
-  type        = string
-}
-
-variable "env" {
-  description = "Environment name"
-  type        = string
-}
-
-variable "tags" {
-  description = "Tags to apply to the VPC"
-  type        = map(string)
-}
-
 variable "region" {
   type = string
 }
 
-variable "public_subnets" {
-  description = "Public Subnets"
-  type        = list(string)
-}
+# variable "cidr_block" {
+#   description = "The CIDR block for the VPC"
+#   type        = string
+# }
 
-variable "azs" {
-  description = "Availabilty Zone"
-  type        = list(string)
-}
+# variable "env" {
+#   description = "Environment name"
+#   type        = string
+# }
 
-variable "private_subnets" {
-  description = "Private Subnets"
-  type        = list(string)
-}
+# variable "tags" {
+#   description = "Tags to apply to the VPC"
+#   type        = map(string)
+# }
 
-variable "cluster_name" {
-  description = "EKS Cluster Name"
-  type        = string
-}
+# variable "public_subnets" {
+#   description = "Public Subnets"
+#   type        = list(string)
+# }
 
-variable "cluster_version" {
-  description = "EKS Cluster Version"
-  type        = string
-}
+# variable "azs" {
+#   description = "Availabilty Zone"
+#   type        = list(string)
+# }
 
-variable "vpc_id" {
-  description = "VPC ID"
-  type        = string
-  default     = ""
-}
+# variable "private_subnets" {
+#   description = "Private Subnets"
+#   type        = list(string)
+# }
 
-variable "private_subnet_ids" {
-  description = "Private Subnets IDs"
-  type        = list(string)
-  default     = []
-}
+# variable "cluster_name" {
+#   description = "EKS Cluster Name"
+#   type        = string
+# }
 
-variable "desired_size" {
-  description = "Desired size of the node group"
-  type        = number
-  default     = 2
-}
+# variable "cluster_version" {
+#   description = "EKS Cluster Version"
+#   type        = string
+# }
 
-variable "max_size" {
-  description = "Maximum size of the node group"
-  type        = number
-  default     = 4
-}
+# variable "vpc_id" {
+#   description = "VPC ID"
+#   type        = string
+#   default     = ""
+# }
 
-variable "min_size" {
-  description = "Minimum size of the node group"
-  type        = number
-  default     = 1
-}
+# variable "private_subnet_ids" {
+#   description = "Private Subnets IDs"
+#   type        = list(string)
+#   default     = []
+# }
 
-variable "node_instance_types" {
-  description = "Instance types for the node group"
-  type        = list(string)
-}
+# variable "desired_size" {
+#   description = "Desired size of the node group"
+#   type        = number
+#   default     = 2
+# }
 
-variable "allowd_cidr_blocks" {
-  description = "Allowed CIDR blocks for access"
-  type        = list(string)
-  default     = []
-}
+# variable "max_size" {
+#   description = "Maximum size of the node group"
+#   type        = number
+#   default     = 4
+# }
 
-variable "public_subnet_ids" {
-  description = "Public Subnets IDs"
-  type        = list(string)
-  default     = []
-}
+# variable "min_size" {
+#   description = "Minimum size of the node group"
+#   type        = number
+#   default     = 1
+# }
 
-variable "bastion_assume_role_principals" {
-  description = "List of IAM principals allowed to assume the bastion role"
-  type        = list(string)
-  default     = []
-}
+# variable "node_instance_types" {
+#   description = "Instance types for the node group"
+#   type        = list(string)
+# }
+
+# variable "allowd_cidr_blocks" {
+#   description = "Allowed CIDR blocks for access"
+#   type        = list(string)
+#   default     = []
+# }
+
+# variable "public_subnet_ids" {
+#   description = "Public Subnets IDs"
+#   type        = list(string)
+#   default     = []
+# }
+
+# variable "bastion_assume_role_principals" {
+#   description = "List of IAM principals allowed to assume the bastion role"
+#   type        = list(string)
+#   default     = []
+# }
