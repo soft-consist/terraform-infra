@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "vpc" {
-   source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=v9.0.16"
+   source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=v9.0.18"
    env             = var.env
    cidr_block      = var.cidr_block
    tags            = var.tags
@@ -14,7 +14,7 @@ module "vpc" {
  }
 
  module "eks" {
-   source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.16"
+   source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.18"
    env                 = var.env
    cluster_name        = var.cluster_name
    cluster_version     = var.cluster_version
@@ -30,9 +30,20 @@ module "vpc" {
  }
 
  module "bastion" {
-   source = "git::https://github.com/soft-consist/terraform-modules.git//modules/bastion?ref=v9.0.16"
+   source = "git::https://github.com/soft-consist/terraform-modules.git//modules/bastion?ref=v9.0.18"
    env    = var.env
    tags             = var.tags
    bastion_assume_role_principals = var.bastion_assume_role_principals
  }
 
+module "addons" {
+  source = "git::https://github.com/soft-consist/terraform-module.git//addons?ref=v9.0.18"
+
+  cluster_name = module.eks.cluster_name
+
+  addons = {
+    "vpc-cni" = {}
+    "coredns" = {}
+    "kube-proxy" = {}
+  }
+}
