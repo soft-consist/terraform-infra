@@ -37,7 +37,7 @@ module "vpc" {
  }
 
 module "addons" {
-  source = "git::https://github.com/soft-consist/terraform-module.git//modules/addons?ref=v9.0.20"
+  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/addons?ref=v9.0.20"
 
   cluster_name       = module.eks.cluster_name
   cni_version        = var.cni_version
