@@ -25,4 +25,4 @@ bastion_assume_role_principals = [
 
 cni_version        = "v1.18.1-eksbuild.1"
 coredns_version    = "v1.11.1-eksbuild.4"
-kube_proxy_version = "v1.29.0-eksbuild.1"
+kube_proxy_version = "v1.34.1-eksbuild.2"
