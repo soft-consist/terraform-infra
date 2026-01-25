@@ -1,7 +1,3 @@
-provider "aws" {
-  region = var.region
-}
-
 module "vpc" {
    source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=v9.0.25"
    env             = var.env
