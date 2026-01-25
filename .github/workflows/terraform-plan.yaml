@@ -153,10 +153,6 @@ jobs:
         working-directory: envs/prod
         run: terraform init -input=false
 
-      - name: Fix broken helm state (ONE TIME)
-        working-directory: envs/prod
-        run: terraform state rm module.argocd.helm_release.argocd || true
-
       - name: Terraform Validate
         working-directory: envs/prod
         run: terraform validate
