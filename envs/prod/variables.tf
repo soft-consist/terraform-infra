@@ -114,3 +114,7 @@ variable "efs_csi_driver_version" {
 variable "ebs_csi_driver_version" {
   type = string
 }
+
+variable "service_account" {
+  type = string
+}
