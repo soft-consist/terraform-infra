@@ -48,7 +48,7 @@ module "addons" {
 }
 
 module "irsa" {
-  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/irsa?ref=v9.0.22"
+  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/irsa?ref=p-103"
   role_name       = "${var.env}-irsa-role"
   oidc_provider_arn   = module.eks.oidc_provider_arn
   oidc_provider_url   = module.eks.oidc_provider_url
