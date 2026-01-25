@@ -53,7 +53,7 @@ module "irsa" {
   oidc_provider_arn   = module.eks.oidc_provider_arn
   oidc_provider_url   = module.eks.oidc_provider_url
   namespace       = "kube-system"
-  service_account = "ebs-csi-controller-sa"
+  service_account = var.service_account
   policy_arns    = [
     "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
   ]
