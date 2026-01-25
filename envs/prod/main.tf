@@ -47,6 +47,23 @@ module "addons" {
   # ebs_csi_driver_version   = var.ebs_csi_driver_version
 }
 
+module "argocd" {
+  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=x2"
+  cluster_name = module.eks.cluster_name
+  values = [
+    file("${path.module}/argocd-values.yaml")
+  ]
+}
+
+
+
+
+
+
+
+
+
+
 # module "irsa" {
 #   source = "git::https://github.com/soft-consist/terraform-modules.git//modules/irsa?ref=v9.0.24"
 #   role_name       = "${var.env}-irsa-role"
