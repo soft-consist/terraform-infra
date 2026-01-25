@@ -14,7 +14,7 @@ module "vpc" {
  }
 
  module "eks" {
-   source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.22"
+   source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.23"
    env                 = var.env
    cluster_name        = var.cluster_name
    cluster_version     = var.cluster_version
@@ -37,7 +37,7 @@ module "vpc" {
  }
 
 module "addons" {
-  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/addons?ref=v9.0.22"
+  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/addons?ref=v9.0.23"
   cluster_name       = module.eks.cluster_name
   cni_version        = var.cni_version
   coredns_version    = var.coredns_version
@@ -48,7 +48,7 @@ module "addons" {
 }
 
 module "irsa" {
-  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/irsa?ref=p-103"
+  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/irsa?ref=v9.0.23"
   role_name       = "${var.env}-irsa-role"
   oidc_provider_arn   = module.eks.oidc_provider_arn
   oidc_provider_url   = module.eks.oidc_provider_url
