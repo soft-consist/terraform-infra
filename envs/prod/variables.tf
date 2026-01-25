@@ -27,15 +27,15 @@ variable "region" {
 #    type        = list(string)
 #  }
 
-#  variable "private_subnets" {
-#    description = "Private Subnets"
-#    type        = list(string)
-#  }
+ variable "private_subnets" {
+   description = "Private Subnets"
+   type        = list(string)
+ }
 
-#  variable "cluster_name" {
-#    description = "EKS Cluster Name"
-#    type        = string
-#  }
+ variable "cluster_name" {
+   description = "EKS Cluster Name"
+   type        = string
+ }
 
 #  variable "cluster_version" {
 #    description = "EKS Cluster Version"
