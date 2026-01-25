@@ -14,7 +14,7 @@ module "vpc" {
  }
 
  module "eks" {
-   source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.20"
+   source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=p-104"
    env                 = var.env
    cluster_name        = var.cluster_name
    cluster_version     = var.cluster_version
@@ -37,11 +37,25 @@ module "vpc" {
  }
 
 module "addons" {
-  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/addons?ref=v9.0.21"
+  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/addons?ref=p-104"
   cluster_name       = module.eks.cluster_name
   cni_version        = var.cni_version
   coredns_version    = var.coredns_version
   kube_proxy_version = var.kube_proxy_version
+  ebs_csi_role_arn = module.irsa.role_arn
   efs_csi_driver_version   = var.efs_csi_driver_version
   ebs_csi_driver_version   = var.ebs_csi_driver_version
+}
+
+module "irsa" {
+  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/irsa?ref=p-104"
+  role_name       = "${var.env}-irsa-role"
+  oidc_provider_arn   = module.eks.oidc_provider_arn
+  oidc_provider_url   = module.eks.oidc_provider_url
+  namespace       = "kube-system"
+  service_account = var.service_account
+  policy_arns    = [
+    "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  ]
+  tags = var.tags
 }

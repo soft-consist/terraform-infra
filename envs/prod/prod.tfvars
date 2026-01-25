@@ -28,3 +28,5 @@ coredns_version    = "v1.12.4-eksbuild.1"
 kube_proxy_version = "v1.34.1-eksbuild.2"
 efs_csi_driver_version = "v2.2.0-eksbuild.1"
 ebs_csi_driver_version = "v1.54.0-eksbuild.1"
+
+service_account = "ebs-csi-controller-sa"

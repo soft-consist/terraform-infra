@@ -20,6 +20,14 @@
    value       = module.eks.cluster_endpoint
  }
 
+ output "oidc_provider_url" {
+   value = module.eks.oidc_provider_url
+ }
+
+ output "oidc_provider_arn" {
+   value = module.eks.oidc_provider_arn
+ }
+
  output "cluster_ca" {
    description = "EKS Cluster CA"
    value       = module.eks.cluster_ca
