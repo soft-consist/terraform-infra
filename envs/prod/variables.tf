@@ -115,6 +115,6 @@ variable "ebs_csi_driver_version" {
   type = string
 }
 
-variable "service_account_name" {
+variable "service_account" {
   type = string
 }
