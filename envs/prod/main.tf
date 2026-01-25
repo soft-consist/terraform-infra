@@ -57,4 +57,5 @@ module "irsa" {
   policy_arns    = [
     "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
   ]
+  tags = var.tags
 }
