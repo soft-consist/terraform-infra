@@ -15,6 +15,11 @@
    value       = module.eks.cluster_name
  }
 
+output "cluster_ca_certificate" {
+  description = "Cluster certificate"
+  value = module.eks.cluster_ca_certificate
+}
+
  output "cluster_endpoint" {
    description = "EKS Cluster Endpoint"
    value       = module.eks.cluster_endpoint
