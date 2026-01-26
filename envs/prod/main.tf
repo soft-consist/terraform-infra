@@ -43,14 +43,14 @@ module "addons" {
   # ebs_csi_driver_version   = var.ebs_csi_driver_version
 }
 
-# module "argocd" {
-#   source       = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=v9.0.34"
-#   cluster_name = module.eks.cluster_name
-#   values = [
-#     file("${path.module}/argocd-values.yaml")
-#   ]
-#   bootstrap_file = "${path.module}/argocd-bootstrap.yaml"
-# }
+module "argocd" {
+  source       = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=v9.0.34"
+  cluster_name = module.eks.cluster_name
+  values = [
+    file("${path.module}/argocd-values.yaml")
+  ]
+  bootstrap_file = "${path.module}/argocd-bootstrap.yaml"
+}
 
 # module "irsa" {
 #   source = "git::https://github.com/soft-consist/terraform-modules.git//modules/irsa?ref=v9.0.24"
