@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/soft-consist/application-charts.git
+    repoURL: https://github.com/soft-consist/applications-charts.git
     targetRevision: main
     path: applications
   destination:
