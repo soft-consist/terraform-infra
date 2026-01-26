@@ -44,7 +44,7 @@ module "addons" {
 }
 
 module "argocd" {
-  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=v9.0.30"
+  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=v9.0.31"
   cluster_name = module.eks.cluster_name
   values = [
     file("${path.module}/argocd-values.yaml")
