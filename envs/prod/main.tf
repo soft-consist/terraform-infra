@@ -1,5 +1,5 @@
 module "vpc" {
-   source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=v9.0.25"
+   source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=v9.0.27"
    env             = var.env
    cidr_block      = var.cidr_block
    tags            = var.tags
@@ -10,7 +10,7 @@ module "vpc" {
  }
 
  module "eks" {
-   source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.25"
+   source              = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.27"
    env                 = var.env
    cluster_name        = var.cluster_name
    cluster_version     = var.cluster_version
@@ -26,14 +26,14 @@ module "vpc" {
  }
 
  module "bastion" {
-   source = "git::https://github.com/soft-consist/terraform-modules.git//modules/bastion?ref=v9.0.25"
+   source = "git::https://github.com/soft-consist/terraform-modules.git//modules/bastion?ref=v9.0.27"
    env    = var.env
    tags             = var.tags
    bastion_assume_role_principals = var.bastion_assume_role_principals
  }
 
 module "addons" {
-  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/addons?ref=v9.0.25"
+  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/addons?ref=v9.0.27"
   cluster_name       = module.eks.cluster_name
   cni_version        = var.cni_version
   coredns_version    = var.coredns_version
@@ -44,7 +44,7 @@ module "addons" {
 }
 
 module "argocd" {
-  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=v9.0.26"
+  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=v9.0.27"
   cluster_name = module.eks.cluster_name
   values = [
     file("${path.module}/argocd-values.yaml")
