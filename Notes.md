@@ -38,3 +38,5 @@ AWS_PROFILE=eks-bastion aws eks update-kubeconfig \
 # Command to get initial password of ArgoCD
 kubectl -n argocd get secret argocd-initial-admin-secret \
   -o jsonpath="{.data.password}" | base64 -d; echo
+
+$ kubectl get configmap aws-auth -n kube-system -o yaml
