@@ -30,10 +30,7 @@ $ AWS_PROFILE=eks-bastion aws sts get-caller-identity
     "Arn": "arn:aws:sts::xxx:assumed-role/prod-bastion-access-role/xxx"
 }
 
-AWS_PROFILE=eks-bastion aws eks update-kubeconfig \
-  --region ap-northeast-2 \
-  --name Shared-cluster \
-  --alias eks-bastion
+AWS_PROFILE=eks-bastion aws eks update-kubeconfig --region ap-northeast-2 --name Shared-cluster --alias eks-bastion
 
 # Command to get initial password of ArgoCD
 kubectl -n argocd get secret argocd-initial-admin-secret \
