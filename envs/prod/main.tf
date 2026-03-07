@@ -38,9 +38,9 @@ module "addons" {
   cni_version        = var.cni_version
   coredns_version    = var.coredns_version
   kube_proxy_version = var.kube_proxy_version
-  # ebs_csi_role_arn = module.irsa.role_arn
-  # efs_csi_driver_version   = var.efs_csi_driver_version
-  # ebs_csi_driver_version   = var.ebs_csi_driver_version
+  ebs_csi_role_arn = module.irsa.role_arn
+  efs_csi_driver_version   = var.efs_csi_driver_version
+  ebs_csi_driver_version   = var.ebs_csi_driver_version
 }
 
 module "argocd" {

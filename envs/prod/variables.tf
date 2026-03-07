@@ -107,13 +107,13 @@ variable "kube_proxy_version" {
   type = string
 }
 
-# variable "efs_csi_driver_version" {
-#   type = string
-# }
+variable "efs_csi_driver_version" {
+  type = string
+}
 
-# variable "ebs_csi_driver_version" {
-#   type = string
-# }
+variable "ebs_csi_driver_version" {
+  type = string
+}
 
 variable "service_account" {
   type = string
