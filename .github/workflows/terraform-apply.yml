@@ -62,6 +62,12 @@ jobs:
       - name: Terraform Init
         working-directory: envs/dev
         run: terraform init -input=false
+      
+      # - name: Refresh AWS credentials before apply
+      #   uses: aws-actions/configure-aws-credentials@v2
+      #   with:
+      #     role-to-assume: ${{ secrets.AWS_ROLE_ARN_DEV }}
+      #     aws-region: ap-northeast-2
 
       - name: Terraform Apply
         working-directory: envs/dev
@@ -123,6 +129,12 @@ jobs:
       - name: Terraform Init
         working-directory: envs/prod
         run: terraform init -input=false
+
+      - name: Refresh AWS credentials before apply
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
+          aws-region: ap-northeast-2
 
       - name: Terraform Apply
         working-directory: envs/prod
