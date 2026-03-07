@@ -50,6 +50,10 @@ module "argocd" {
     file("${path.module}/argocd-values.yaml")
   ]
   bootstrap_file = "${path.module}/argocd-bootstrap.yaml"
+  depends_on = [
+    module.eks,
+    aws_eks_access_policy_association.github_actions_admin
+  ]
 }
 
 module "irsa" {
