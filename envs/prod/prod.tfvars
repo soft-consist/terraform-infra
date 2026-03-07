@@ -11,7 +11,7 @@ region          = "ap-northeast-2"
 cluster_name    = "Shared-cluster"
 cluster_version = "1.34"
 
-desired_size = 2
+desired_size = 1
 max_size     = 4
 min_size     = 2
 
