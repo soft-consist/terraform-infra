@@ -36,7 +36,7 @@ module "addons" {
   source             = "git::https://github.com/soft-consist/terraform-modules.git//modules/addons?ref=v9.0.27"
   cluster_name       = module.eks.cluster_name
   cni_version        = var.cni_version
-#   coredns_version    = var.coredns_version
+  coredns_version    = var.coredns_version
   kube_proxy_version = var.kube_proxy_version
   # ebs_csi_role_arn = module.irsa.role_arn
   # efs_csi_driver_version   = var.efs_csi_driver_version
