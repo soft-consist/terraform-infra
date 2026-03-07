@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/soft-consist/applications-charts.git
     targetRevision: main
-    path: applications
+    path: applications/prod
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
