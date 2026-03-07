@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/soft-consist/applications-charts.git
-    targetRevision: chart2
+    targetRevision: main
     path: applications
   destination:
     server: https://kubernetes.default.svc
