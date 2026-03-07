@@ -115,6 +115,6 @@ variable "kube_proxy_version" {
 #   type = string
 # }
 
-# variable "service_account" {
-#   type = string
-# }
+variable "service_account" {
+  type = string
+}
