@@ -37,3 +37,8 @@ kubectl -n argocd get secret argocd-initial-admin-secret \
   -o jsonpath="{.data.password}" | base64 -d; echo
 
 $ kubectl get configmap aws-auth -n kube-system -o yaml
+
+
+Resource deletation process -
+
+https://github.com/soft-consist/terraform-infra/pull/96/changes
