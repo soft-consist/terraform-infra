@@ -12,20 +12,20 @@ terraform {
   }
 }
 
-module "vpc" {
-  source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=v9.0.27"
-  env             = var.env
-  cidr_block      = var.cidr_block
-  tags            = var.tags
-  region          = var.region
-  public_subnets  = var.public_subnets
-  private_subnets = var.private_subnets
-  azs             = var.azs
-}
+# module "vpc" {
+#   source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=v9.0.27"
+#   env             = var.env
+#   cidr_block      = var.cidr_block
+#   tags            = var.tags
+#   region          = var.region
+#   public_subnets  = var.public_subnets
+#   private_subnets = var.private_subnets
+#   azs             = var.azs
+# }
 
-output "aws_vpc" {
-   value = module.vpc.aws_vpc
- }
+# output "aws_vpc" {
+#    value = module.vpc.aws_vpc
+#  }
 
 # module "eks" {
 #   source                  = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.27"
