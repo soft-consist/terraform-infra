@@ -43,28 +43,28 @@ module "addons" {
   # ebs_csi_driver_version   = var.ebs_csi_driver_version
 }
 
-# module "argocd" {
-#   source       = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=v9.0.34"
-#   cluster_name = module.eks.cluster_name
-#   values = [
-#     file("${path.module}/argocd-values.yaml")
-#   ]
-#   bootstrap_file = "${path.module}/argocd-bootstrap.yaml"
-#   # depends_on = [
-#   #   module.eks,
-#   #   aws_eks_access_policy_association.github_actions_admin
-#   # ]
-# }
+module "argocd" {
+  source       = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=v9.0.34"
+  cluster_name = module.eks.cluster_name
+  values = [
+    file("${path.module}/argocd-values.yaml")
+  ]
+  bootstrap_file = "${path.module}/argocd-bootstrap.yaml"
+  # depends_on = [
+  #   module.eks,
+  #   aws_eks_access_policy_association.github_actions_admin
+  # ]
+}
 
-# module "irsa" {
-#   source = "git::https://github.com/soft-consist/terraform-modules.git//modules/irsa?ref=v9.0.24"
-#   role_name       = "${var.env}-irsa-role"
-#   oidc_provider_arn   = module.eks.oidc_provider_arn
-#   oidc_provider_url   = module.eks.oidc_provider_url
-#   namespace       = "kube-system"
-#   service_account = var.service_account
-#   policy_arns    = [
-#     "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-#   ]
-#   tags = var.tags
-# }
+module "irsa" {
+  source = "git::https://github.com/soft-consist/terraform-modules.git//modules/irsa?ref=v9.0.24"
+  role_name       = "${var.env}-irsa-role"
+  oidc_provider_arn   = module.eks.oidc_provider_arn
+  oidc_provider_url   = module.eks.oidc_provider_url
+  namespace       = "kube-system"
+  service_account = var.service_account
+  policy_arns    = [
+    "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  ]
+  tags = var.tags
+}

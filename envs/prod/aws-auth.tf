@@ -23,9 +23,9 @@ resource "kubernetes_config_map_v1_data" "aws_auth" {
       }
     ])
   }
-  # force = true
+  force = true
 
-  # depends_on = [
-  #   aws_eks_access_policy_association.github_actions_admin
-  # ]
+  depends_on = [
+    aws_eks_access_policy_association.github_actions_admin
+  ]
 }
