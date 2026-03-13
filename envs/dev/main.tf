@@ -26,3 +26,4 @@ module "eks" {
   min_size            = var.min_size
   node_instance_types = var.node_instance_types
   allowd_cidr_blocks  = var.allowd_cidr_blocks
+}
