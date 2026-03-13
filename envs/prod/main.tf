@@ -1,5 +1,5 @@
 module "vpc" {
-  source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=v9.0.27"
+  source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=v9.0.35"
   env             = var.env
   cidr_block      = var.cidr_block
   tags            = var.tags
@@ -10,7 +10,7 @@ module "vpc" {
 }
 
 module "eks" {
-  source                  = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.27"
+  source                  = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks?ref=v9.0.35"
   env                     = var.env
   cluster_name            = var.cluster_name
   cluster_version         = var.cluster_version
@@ -26,14 +26,14 @@ module "eks" {
 }
 
 # module "bastion" {
-#   source                         = "git::https://github.com/soft-consist/terraform-modules.git//modules/bastion?ref=v9.0.27"
+#   source                         = "git::https://github.com/soft-consist/terraform-modules.git//modules/bastion?ref=v9.0.35"
 #   env                            = var.env
 #   tags                           = var.tags
 #   bastion_assume_role_principals = var.bastion_assume_role_principals
 # }
 
 # module "addons" {
-#   source             = "git::https://github.com/soft-consist/terraform-modules.git//modules/addons?ref=v9.0.27"
+#   source             = "git::https://github.com/soft-consist/terraform-modules.git//modules/addons?ref=v9.0.35"
 #   cluster_name       = module.eks.cluster_name
 #   cni_version        = var.cni_version
 #   coredns_version    = var.coredns_version
@@ -44,7 +44,7 @@ module "eks" {
 # }
 
 # # module "argocd" {
-# #   source       = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=v9.0.34"
+# #   source       = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=v9.0.35"
 # #   cluster_name = module.eks.cluster_name
 # #   values = [
 # #     file("${path.module}/argocd-values.yaml")
@@ -57,7 +57,7 @@ module "eks" {
 # # }
 
 # # module "irsa" {
-# #   source = "git::https://github.com/soft-consist/terraform-modules.git//modules/irsa?ref=v9.0.24"
+# #   source = "git::https://github.com/soft-consist/terraform-modules.git//modules/irsa?ref=v9.0.35"
 # #   role_name       = "${var.env}-irsa-role"
 # #   oidc_provider_arn   = module.eks.oidc_provider_arn
 # #   oidc_provider_url   = module.eks.oidc_provider_url
