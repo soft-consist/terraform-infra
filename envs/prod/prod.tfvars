@@ -18,10 +18,10 @@ min_size     = 2
 node_instance_types = ["t3.small"]
 allowd_cidr_blocks  = ["12.0.0.0/16"]
 
-bastion_assume_role_principals = [
-  "arn:aws:iam::358871393576:user/Ashutosh-Bambal",
-  "arn:aws:iam::358871393576:user/Kalyani-Bambal"
-]
+# bastion_assume_role_principals = [
+#   "arn:aws:iam::358871393576:user/Ashutosh-Bambal",
+#   "arn:aws:iam::358871393576:user/Kalyani-Bambal"
+# ]
 
 cni_version        = "v1.20.3-eksbuild.1"
 coredns_version    = "v1.12.4-eksbuild.1"
