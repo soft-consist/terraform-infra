@@ -9,3 +9,8 @@ output "region" {
 output "private_subnet_ids" {
   value = module.vpc.private_subnet_ids
 }
+
+output "cluster_id" {
+    value = module.eks.cluster_id
+    description = "EKS Cluster ID"
+}
