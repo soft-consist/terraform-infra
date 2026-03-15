@@ -89,3 +89,14 @@ variable "kube_proxy_version" {
   type        = string
   description = "Version of the kube-proxy plugin to install"
 }
+
+# eks-access variables
+
+variable "eks_access_entries" {
+  description = "List of access entries for EKS cluster access"
+  type = list(object({
+    principal_arn = string
+    policy_arn    = string
+  }))
+  default = []
+}
