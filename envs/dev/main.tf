@@ -31,3 +31,10 @@ module "addons" {
   coredns_version    = var.coredns_version
   kube_proxy_version = var.kube_proxy_version
 }
+
+module "bastion" {
+  source                         = "git::https://github.com/soft-consist/terraform-modules.git//modules/bastion?ref=v9.0.35"
+  env                            = var.env
+  tags                           = var.tags
+  bastion_assume_role_principals = var.bastion_assume_role_principals
+}
