@@ -32,6 +32,8 @@ variable "private_subnets" {
   type        = list(string)
 }
 
+# EKS variables
+
 variable "cluster_name" {
   description = "EKS Cluster Name"
   type        = string
@@ -40,12 +42,6 @@ variable "cluster_name" {
 variable "cluster_version" {
   description = "EKS Cluster Version"
   type        = string
-}
-
-variable "vpc_id" {
-  description = "VPC ID"
-  type        = string
-  default     = ""
 }
 
 variable "private_subnet_ids" {
