@@ -34,20 +34,9 @@ variable "private_subnets" {
 
 # EKS variables
 
-variable "cluster_name" {
-  description = "EKS Cluster Name"
-  type        = string
-}
-
 variable "cluster_version" {
   description = "EKS Cluster Version"
   type        = string
-}
-
-variable "private_subnet_ids" {
-  description = "Private Subnets IDs"
-  type        = list(string)
-  default     = []
 }
 
 variable "desired_size" {
