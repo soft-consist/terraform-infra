@@ -89,3 +89,8 @@ variable "kube_proxy_version" {
   type        = string
   description = "Version of the kube-proxy plugin to install"
 }
+
+variable "bastion_assume_role_principals" {
+  description = "List of AWS account IDs or IAM role ARNs that can assume the bastion access role"
+  type        = list(string)
+}
