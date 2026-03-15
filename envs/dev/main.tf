@@ -1,7 +1,3 @@
-provider "aws" {
-  region = var.region
-}
-
 module "vpc" {
   source          = "git::https://github.com/soft-consist/terraform-modules.git//modules/vpc?ref=v9.0.35"
   env             = var.env
@@ -26,4 +22,11 @@ module "eks" {
   min_size            = var.min_size
   node_instance_types = var.node_instance_types
   allowd_cidr_blocks  = var.allowd_cidr_blocks
+}
+
+module "addons" {
+  source       = "git::https://github.com/soft-consist/terraform-modules.git//modules/addons?ref=v9.0.35"
+  env          = var.env
+  cluster_name = var.cluster_name
+  tags         = var.tags
 }
