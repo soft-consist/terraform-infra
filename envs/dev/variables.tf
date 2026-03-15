@@ -99,8 +99,3 @@ variable "kube_proxy_version" {
   type        = string
   description = "Version of the kube-proxy plugin to install"
 }
-
-variable "cluster_name" {
-  description = "EKS Cluster Name"
-  type        = string
-}
