@@ -17,10 +17,10 @@
 #   type        = map(string)
 # }
 
-# variable "public_subnets" {
-#   description = "Public Subnets"
-#   type        = list(string)
-# }
+variable "public_subnets" {
+  description = "Public Subnets"
+  type        = list(string)
+}
 
 # variable "azs" {
 #   description = "Availabilty Zone"
@@ -34,10 +34,10 @@
 
 # # EKS variables
 
-# variable "cluster_name" {
-#   description = "EKS Cluster Name"
-#   type        = string
-# }
+variable "cluster_name" {
+  description = "EKS Cluster Name"
+  type        = string
+}
 
 # variable "cluster_version" {
 #   description = "EKS Cluster Version"
