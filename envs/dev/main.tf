@@ -26,7 +26,7 @@ module "eks" {
 
 module "addons" {
   source             = "git::https://github.com/soft-consist/terraform-modules.git//modules/addons?ref=v9.0.35"
-  cluster_name       = module.eks.cluster_id
+  cluster_name       = var.cluster_name
   cni_version        = var.cni_version
   coredns_version    = var.coredns_version
   kube_proxy_version = var.kube_proxy_version
