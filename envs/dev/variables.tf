@@ -94,9 +94,9 @@ variable "kube_proxy_version" {
 
 variable "eks_access_entries" {
   description = "List of access entries for EKS cluster access"
-  type        = list(object({
+  type = list(object({
     principal_arn = string
     policy_arn    = string
   }))
-  default     = []
+  default = []
 }
