@@ -14,3 +14,7 @@ output "cluster_name" {
   description = "EKS Cluster Name"
   value       = module.eks.cluster_name
 }
+
+output "access_entries" {
+  value = module.eks-access.access_entries
+}

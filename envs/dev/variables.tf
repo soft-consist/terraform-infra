@@ -92,11 +92,10 @@ variable "kube_proxy_version" {
 
 # eks-access variables
 
-variable "eks_access_entries" {
-  description = "List of access entries for EKS cluster access"
+variable "access_entries" {
+  description = "List of IAM principals needing access"
   type = list(object({
     principal_arn = string
     policy_arn    = string
   }))
-  default = []
 }
