@@ -82,3 +82,21 @@ variable "allowd_cidr_blocks" {
   type        = list(string)
   default     = []
 }
+
+# Addons variables
+
+variable "cni_version" {
+  type        = string
+  description = "Version of the AWS VPC CNI plugin to install"
+}
+
+variable "coredns_version" {
+  type        = string
+  description = "Version of the CoreDNS plugin to install"
+}
+
+variable "kube_proxy_version" {
+  type        = string
+  description = "Version of the kube-proxy plugin to install"
+}
+
