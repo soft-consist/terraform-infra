@@ -16,5 +16,5 @@ output "cluster_name" {
 }
 
 output "access_entries" {
-  value = aws_eks_access_entry.access
+  value = module.eks-access.access_entries
 }
