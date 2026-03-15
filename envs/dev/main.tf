@@ -32,9 +32,8 @@ module "addons" {
   kube_proxy_version = var.kube_proxy_version
 }
 
-module "bastion" {
-  source                         = "git::https://github.com/soft-consist/terraform-modules.git//modules/bastion?ref=v9.0.35"
-  env                            = var.env
-  tags                           = var.tags
-  bastion_assume_role_principals = var.bastion_assume_role_principals
+module "eks-access" {
+  source                         = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks-access?ref=v9.0.36"
+  cluster_name = var.cluster_name
+  access_entries = var.eks_access_entries
 }
