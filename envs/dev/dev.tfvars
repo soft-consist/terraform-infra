@@ -34,9 +34,5 @@ access_entries = [
   {
     principal_arn = "arn:aws:iam::358871393576:role/github-actions-terraform-role"
     policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-  },
-  {
-    principal_arn = "arn:aws:iam::358871393576:role/dev-bastion-access-role"
-    policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
   }
 ]
