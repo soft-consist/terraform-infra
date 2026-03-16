@@ -2,6 +2,8 @@ provider "aws" {
   region = "us-east-1"
 }
 
+# While argocd commenting out comment out the below provider to avoid issues with kubectl and helm providers
+
 terraform {
   required_providers {
     kubectl = {
@@ -28,15 +30,11 @@ data "aws_eks_cluster_auth" "eks" {
 }
 
 provider "kubernetes" {
-
   host                   = data.aws_eks_cluster.eks.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks.certificate_authority[0].data)
-
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
-
-    command = "aws"
-
+    command     = "aws"
     args = [
       "eks",
       "get-token",
@@ -47,16 +45,12 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-
   kubernetes {
     host                   = data.aws_eks_cluster.eks.endpoint
     cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks.certificate_authority[0].data)
-
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
-
-      command = "aws"
-
+      command     = "aws"
       args = [
         "eks",
         "get-token",
