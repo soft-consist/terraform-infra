@@ -23,9 +23,9 @@ kube_proxy_version = "v1.34.1-eksbuild.2"
 
 # Commanly used variables
 
-env = "dev"
+env = "dev-2"
 tags = {
-  "name" = "dev-1"
+  "name" = "dev-2"
 }
 
 # EKS Access variables
