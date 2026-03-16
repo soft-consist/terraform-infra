@@ -33,17 +33,17 @@ module "addons" {
   kube_proxy_version = var.kube_proxy_version
 }
 
-# module "eks-access" {
-#   source         = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks-access?ref=v9.0.36"
-#   cluster_name   = var.cluster_name
-#   access_entries = var.access_entries
-#   depends_on     = [data.aws_eks_cluster.eks]
-# }
+module "eks-access" {
+  source         = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks-access?ref=v9.0.36"
+  cluster_name   = var.cluster_name
+  access_entries = var.access_entries
+  depends_on     = [data.aws_eks_cluster.eks]
+}
 
-# module "argocd" {
-#   source         = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=v9.0.37"
-#   cluster_name   = var.cluster_name
-#   values         = [file("${path.module}/argocd-values.yaml")]
-#   bootstrap_file = "${path.module}/argocd-bootstrap.yaml"
-#   depends_on     = [data.aws_eks_cluster.eks]
-# }
+module "argocd" {
+  source         = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=v9.0.37"
+  cluster_name   = var.cluster_name
+  values         = [file("${path.module}/argocd-values.yaml")]
+  bootstrap_file = "${path.module}/argocd-bootstrap.yaml"
+  depends_on     = [data.aws_eks_cluster.eks]
+}
