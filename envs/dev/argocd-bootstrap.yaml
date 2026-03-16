@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/soft-consist/applications-charts.git
+    repoURL: https://github.com/ashubambal/student-management-k8s.git
     targetRevision: main
     path: applications/prod
   destination:

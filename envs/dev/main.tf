@@ -22,6 +22,7 @@ module "eks" {
   node_instance_types = var.node_instance_types
   allowd_cidr_blocks  = var.allowd_cidr_blocks
   tags                = var.tags
+  depends_on          = [module.vpc]
 }
 
 module "addons" {
@@ -33,7 +34,21 @@ module "addons" {
 }
 
 module "eks-access" {
-  source             = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks-access?ref=v9.0.36"
-  cluster_name = var.cluster_name
+  source         = "git::https://github.com/soft-consist/terraform-modules.git//modules/eks-access?ref=v9.0.36"
+  cluster_name   = var.cluster_name
   access_entries = var.access_entries
+  depends_on     = [module.eks]
+}
+
+module "argocd" {
+  source       = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=v9.0.36"
+  cluster_name = module.eks.cluster_name
+  values = [
+    file("${path.module}/argocd-values.yaml")
+  ]
+  bootstrap_file = "${path.module}/argocd-bootstrap.yaml"
+  # depends_on = [
+  #   module.eks,
+  #   aws_eks_access_policy_association.github_actions_admin
+  # ]
 }
