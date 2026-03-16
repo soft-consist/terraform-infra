@@ -41,7 +41,7 @@ module "eks-access" {
 }
 
 module "argocd" {
-  source       = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=v9.0.36"
+  source       = "git::https://github.com/soft-consist/terraform-modules.git//modules/argocd?ref=v9.0.37"
   cluster_name = var.cluster_name
   values       = [file("${path.module}/argocd-values.yaml")]
   bootstrap_file = "${path.module}/argocd-bootstrap.yaml"
