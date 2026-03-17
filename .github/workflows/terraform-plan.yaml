@@ -20,7 +20,8 @@ jobs:
       bootstrap: ${{ steps.filter.outputs.bootstrap }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name : Checkout code 
+        uses: actions/checkout@v4
 
       - name: Detect changed paths
         id: filter
@@ -46,14 +47,30 @@ jobs:
       needs.detect-changes.outputs.bootstrap == 'true'
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        include:
+          - name: eks-infra
+            dir: 01_eks_infra
+            tfstate: dev/eks-infra.tfstate
+
+          - name: eks-access
+            dir: 02_eks_access
+            tfstate: dev/eks-access.tfstate
+
+          - name: argocd
+            dir: 03_argocd
+            tfstate: dev/argocd.tfstate
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN_DEV }}
-          aws-region: ap-northeast-2
+          aws-region: us-east-1
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -61,16 +78,33 @@ jobs:
           terraform_version: 1.6.6
 
       - name: Terraform Init
-        working-directory: envs/dev
-        run: terraform init -input=false
+        working-directory: ${{ matrix.dir }}
+        run: |
+          terraform init \
+            -backend-config=../global/backend.hcl \
+            -backend-config="key=${{ matrix.tfstate }}"
 
       - name: Terraform Validate
-        working-directory: envs/dev
+        working-directory: ${{ matrix.dir }}
         run: terraform validate
 
       - name: Terraform Plan
-        working-directory: envs/dev
-        run: terraform plan -var-file=dev.tfvars -no-color | tee plan.txt
+        working-directory: ${{ matrix.dir }}
+        run: |
+          terraform plan \
+            -var-file=dev.tfvars \
+            -no-color \
+            -out=plan.tfplan
+
+      - name: Save Plan Output
+        working-directory: ${{ matrix.dir }}
+        run: terraform show -no-color plan.tfplan > plan.txt
+
+      - name: Upload Plan Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: plan-${{ matrix.name }}
+          path: ${{ matrix.dir }}/plan.txt
 
       - name: Notify PR (DEV)
         run: node scripts/terraform-notifier.js
@@ -78,91 +112,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
-          TF_ENV: dev
-          PLAN_PATH: envs/dev/plan.txt
+          TF_ENV: dev-${{ matrix.name }}
+          PLAN_PATH: ${{ matrix.dir }}/plan.txt
 
-  plan-test:
-    needs: detect-changes
-    if: |
-      needs.detect-changes.outputs.test == 'true' ||
-      needs.detect-changes.outputs.modules == 'true' ||
-      needs.detect-changes.outputs.bootstrap == 'true'
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Configure AWS credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN_TEST }}
-          aws-region: ap-northeast-2
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.6.6
-
-      - name: Terraform Init
-        working-directory: envs/test
-        run: terraform init -input=false
-
-      - name: Terraform Validate
-        working-directory: envs/test
-        run: terraform validate
-
-      - name: Terraform Plan
-        working-directory: envs/test
-        run: terraform plan -var-file=test.tfvars -no-color | tee plan.txt
-
-      - name: Notify PR (TEST)
-        run: node scripts/terraform-notifier.js
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          TF_ENV: test
-          PLAN_PATH: envs/test/plan.txt
-
-  plan-prod:
-    needs: detect-changes
-    if: |
-      needs.detect-changes.outputs.prod == 'true' ||
-      needs.detect-changes.outputs.modules == 'true' ||
-      needs.detect-changes.outputs.bootstrap == 'true'
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Configure AWS credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
-          aws-region: ap-northeast-2
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.6.6
-
-      - name: Terraform Init
-        working-directory: envs/prod
-        run: terraform init -input=false
-
-      - name: Terraform Validate
-        working-directory: envs/prod
-        run: terraform validate
-
-      - name: Terraform Plan
-        working-directory: envs/prod
-        run: terraform plan -var-file=prod.tfvars -no-color | tee plan.txt
-
-      - name: Notify PR (PROD)
-        run: node scripts/terraform-notifier.js
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          TF_ENV: prod
-          PLAN_PATH: envs/prod/plan.txt
