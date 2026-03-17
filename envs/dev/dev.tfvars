@@ -11,8 +11,8 @@ cluster_name        = "Shared-cluster"
 cluster_version     = "1.34"
 desired_size        = 4
 max_size            = 8
-min_size            = 2
-node_instance_types = ["t3.small"]
+min_size            = 3
+node_instance_types = ["t3.micro"]
 allowd_cidr_blocks  = ["12.0.0.0/16"]
 
 # Addons variables
