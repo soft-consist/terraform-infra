@@ -4,26 +4,9 @@ provider "aws" {
 
 # # While argocd commenting out comment out the below provider to avoid issues with kubectl and helm providers
 
-# terraform {
-#   required_providers {
-#     kubectl = {
-#       source  = "gavinbunney/kubectl"
-#       version = ">= 1.14.0"
-#     }
-#     kubernetes = {
-#       source  = "hashicorp/kubernetes"
-#       version = ">= 2.0.0"
-#     }
-#     aws = {
-#       source  = "hashicorp/aws"
-#       version = ">= 5.0.0"
-#     }
-#   }
-# }
-
-# data "aws_eks_cluster" "eks" {
-#   name = var.cluster_name
-# }
+data "aws_eks_cluster" "eks" {
+  name = var.cluster_name
+}
 
 # data "aws_eks_cluster_auth" "eks" {
 #   name = var.cluster_name
