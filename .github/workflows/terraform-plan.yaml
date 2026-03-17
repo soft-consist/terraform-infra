@@ -78,7 +78,7 @@ jobs:
           terraform_version: 1.6.6
 
       - name: Terraform Init
-        working-directory: envs/dev/${{ matrix.dir }}
+        working-directory: ${{ matrix.dir }}
         run: |
           terraform init \
             -backend-config=../global/backend.hcl \
