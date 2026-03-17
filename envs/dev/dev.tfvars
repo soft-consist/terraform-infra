@@ -9,7 +9,7 @@ region          = "us-east-1"
 
 cluster_name        = "Shared-cluster"
 cluster_version     = "1.34"
-desired_size        = 2
+desired_size        = 3
 max_size            = 6
 min_size            = 2
 node_instance_types = ["t3.small"]
@@ -23,9 +23,9 @@ kube_proxy_version = "v1.34.1-eksbuild.2"
 
 # Commanly used variables
 
-env = "dev-2"
+env = "dev-1"
 tags = {
-  "name" = "dev-2"
+  "name" = "dev-1"
 }
 
 # EKS Access variables
