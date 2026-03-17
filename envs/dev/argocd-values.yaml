@@ -1,7 +1,7 @@
-server:
-  service:
-    type: LoadBalancer
+# server:
+#   service:
+#     type: LoadBalancer
 
-configs:
-  params:
-    server.insecure: true
+# configs:
+#   params:
+#     server.insecure: true
