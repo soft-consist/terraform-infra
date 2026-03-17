@@ -4,9 +4,9 @@ provider "aws" {
 
 # # While argocd commenting out comment out the below provider to avoid issues with kubectl and helm providers
 
-data "aws_eks_cluster" "eks" {
-  name = var.cluster_name
-}
+# data "aws_eks_cluster" "eks" {
+#   name = var.cluster_name
+# }
 
 # data "aws_eks_cluster_auth" "eks" {
 #   name = var.cluster_name
