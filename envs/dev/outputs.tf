@@ -15,6 +15,8 @@ output "cluster_name" {
   value       = module.eks.cluster_name
 }
 
-# output "access_entries" {
-#   value = module.eks-access.access_entries
-# }
+# aceess entries module
+
+output "access_entries" {
+  value = module.eks-access.access_entries
+}
