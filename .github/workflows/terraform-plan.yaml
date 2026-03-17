@@ -51,15 +51,15 @@ jobs:
       matrix:
         include:
           - name: eks-infra
-            dir: 01_eks_infra
+            dir: envs/dev/01_eks_infra
             tfstate: dev/eks-infra.tfstate
 
           - name: eks-access
-            dir: 02_eks_access
+            dir: envs/dev/02_eks_access
             tfstate: dev/eks-access.tfstate
 
           - name: argocd
-            dir: 03_argocd
+            dir: envs/dev/03_argocd
             tfstate: dev/argocd.tfstate
 
     steps:
@@ -78,18 +78,18 @@ jobs:
           terraform_version: 1.6.6
 
       - name: Terraform Init
-        working-directory: ${{ matrix.dir }}
+        working-directory: envs/dev/${{ matrix.dir }}
         run: |
           terraform init \
             -backend-config=../global/backend.hcl \
             -backend-config="key=${{ matrix.tfstate }}"
 
       - name: Terraform Validate
-        working-directory: ${{ matrix.dir }}
+        working-directory: envs/dev/${{ matrix.dir }}
         run: terraform validate
 
       - name: Terraform Plan
-        working-directory: ${{ matrix.dir }}
+        working-directory: envs/dev/${{ matrix.dir }}
         run: |
           terraform plan \
             -var-file=dev.tfvars \
@@ -97,14 +97,14 @@ jobs:
             -out=plan.tfplan
 
       - name: Save Plan Output
-        working-directory: ${{ matrix.dir }}
+        working-directory: envs/dev/${{ matrix.dir }}
         run: terraform show -no-color plan.tfplan > plan.txt
 
       - name: Upload Plan Artifact
         uses: actions/upload-artifact@v4
         with:
           name: plan-${{ matrix.name }}
-          path: ${{ matrix.dir }}/plan.txt
+          path: envs/dev/${{ matrix.dir }}/plan.txt
 
       - name: Notify PR (DEV)
         run: node scripts/terraform-notifier.js
@@ -113,5 +113,5 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           TF_ENV: dev-${{ matrix.name }}
-          PLAN_PATH: ${{ matrix.dir }}/plan.txt
+          PLAN_PATH: envs/dev/${{ matrix.dir }}/plan.txt
 
