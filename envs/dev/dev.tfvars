@@ -9,10 +9,10 @@ region          = "us-east-1"
 
 cluster_name        = "Shared-cluster"
 cluster_version     = "1.34"
-desired_size        = 4
-max_size            = 8
-min_size            = 3
-node_instance_types = ["t3.micro"]
+desired_size        = 3
+max_size            = 4
+min_size            = 2
+node_instance_types = ["t3.small"]
 allowd_cidr_blocks  = ["12.0.0.0/16"]
 
 # Addons variables
